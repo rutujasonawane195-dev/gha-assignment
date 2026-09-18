@@ -1,20 +1,20 @@
 pipeline {
     agent any
-stages {
-    stage('Tests') {
-        steps {
-            sh 'echo Running tests'
-    }
+paarameters {
+    choice(name: 'ENVIRONMENT', choices: ['staging', ''production'], description: 'Target')
 }
-stages {
-    stage('Approve') {
-        input message: 'Tests passed. Deploy to production?'
-    }
-}
-stages {
-    stage('Deploy') {
-        steps {
-            sh 'echo Deploying to production'
+    stages {
+        stage('Build') { steps { sh 'echo Building '} }
+        stage('Tests') {
+            paarallel {
+                stage('Unit') { steps { sh 'echo Unit tests' } }
+                stage('Integration') {steps { sh 'echo Integration tests' } }
+            }
         }
-    }
+        stage ('Approve'){
+            when { expression {param.ENVIRONMENT == 'production' } }
+            steps { input message: 'Deploy to production?'}
+        }
+        stage('Deploy') { steps { sh "echo Deploying to ${params.ENVIRONMENT}" } }
+ }
 }
