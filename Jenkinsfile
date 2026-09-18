@@ -11,9 +11,9 @@ pipeline {
           echo 'Testing....'
      }
   }
-  stage('done')
-    steps {
-        echo 'Pipeline complete'
+    stage('done')
+       steps {
+          echo 'Pipeline complete'
     }
   }
 }
