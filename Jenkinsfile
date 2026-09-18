@@ -9,7 +9,7 @@ pipeline {
         BUILD_MODE = 'production'
        }
        steps {
-          sh echo 'echo $APP_NAME $BUILD_MODE'
+          sh 'echo $APP_NAME $BUILD_MODE'
     }
   }
 }
